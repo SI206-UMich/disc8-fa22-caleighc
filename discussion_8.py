@@ -1,3 +1,5 @@
+from cgitb import html
+from email.mime import base
 from bs4 import BeautifulSoup
 import requests
 import unittest
@@ -6,21 +8,32 @@ import unittest
 # search for the url in the University of Michgian wikipedia page (in the third pargraph of the intro)
 # HINT: You will have to add https://en.wikipedia.org to the URL retrieved using BeautifulSoup
 def getLink(soup):
-    
-    pass
+    base_url = 'https://en.wikipedia.org'
+    tag = soup.find('a', class_='mw-redirect', title_='List of American universities with Olympic medals')
+    url = tag.get('href')
+    url = base_url + url
+    return url
 
 # Task 3: Get the details from the box titled "College/school founding". Get all the college/school names and the year they were
 # founded and organize the same into key-value pairs.
 def getAdmissionsInfo2019(soup):
-
-    pass
-
+    founded = {}
+    tag = soup.find('table', class_='toccolours')
+    values = tag.find_all('tr')
+    for value in values[1:]:
+        temp2 = value.find_all('td')
+        name = temp2[0].text.strip()
+        year = temp2[1].text.strip()
+        founded[name] = year
+    return founded
 
 
 def main():
     # Task 1: Create a BeautifulSoup object and name it soup. Refer to discussion slides or lecture slides to complete this
 
     #### YOUR CODE HERE####
+    r = requests.get('https://en.wikipedia.org/wiki/University_of_Michigan')
+    soup = BeautifulSoup(r.text, 'html.parser')
 
     #Call the functions getLink(soup) and getAdmissionsInfo2019(soup) on your soup object.
     getLink(soup)
@@ -34,7 +47,9 @@ class TestAllMethods(unittest.TestCase):
         self.assertEqual(getLink(self.soup), 'https://en.wikipedia.org/wiki/List_of_American_universities_with_Olympic_medals')
 
     def test_admissions_info(self):
-        self.assertEqual(getAdmissionsInfo2019(self.soup), {'Engineering': '1854', 
+        self.assertEqual(getAdmissionsInfo2019(self.soup), {'Literature, Science, andthe Arts': '1841',
+                                                            'Medicine': '1850',
+                                                            'Engineering': '1854', 
                                                             'Law': '1859',
                                                             'Dentistry': '1875', 
                                                             'Pharmacy': '1876', 
