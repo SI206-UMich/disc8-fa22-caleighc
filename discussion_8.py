@@ -1,3 +1,4 @@
+# Caleigh Crossman
 from cgitb import html
 from email.mime import base
 from bs4 import BeautifulSoup
@@ -26,7 +27,6 @@ def getAdmissionsInfo2019(soup):
         year = temp2[1].text.strip()
         founded[name] = year
     return founded
-
 
 def main():
     # Task 1: Create a BeautifulSoup object and name it soup. Refer to discussion slides or lecture slides to complete this
