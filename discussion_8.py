@@ -22,9 +22,9 @@ def getAdmissionsInfo2019(soup):
     tag = soup.find('table', class_='toccolours')
     values = tag.find_all('tr')
     for value in values[1:]:
-        temp2 = value.find_all('td')
-        name = temp2[0].text.strip()
-        year = temp2[1].text.strip()
+        val = value.find_all('td')
+        name = val[0].text.strip()
+        year = val[1].text.strip()
         founded[name] = year
     return founded
 
